@@ -1,3 +1,17 @@
+fetch("http://localhost/tiendamvc/api/categories")
+    .then(data => data.json())
+    .then(datos => {
+        datos.forEach(element => {
+            let option = document.createElement("option");
+            option.value = element.category_id;
+            option.textContent = element.name;
+            document.getElementById("category").appendChild(option);
+        });
+    })
+    .catch(err => {
+        console.log(err);
+    })
+
 //AJAX forma nueva de hacer peticiones al servidor
 //fetch(url, options)
 //url: la url a la que se va a hacer la petición
@@ -14,20 +28,6 @@
 //callback: función que recibe la respuesta del servidor
 //fetch.then(callback).catch(callback): se pueden encadenar un then y un catch
 
-
-fetch("http://localhost/tiendamvc/api/categories")
-    .then(data => data.json())
-    .then(datos => {
-        datos.forEach(element => {
-            let option = document.createElement("option");
-            option.value = element.category_id;
-            option.textContent = element.name;
-            document.getElementById("category").appendChild(option);
-        });
-    })
-    .catch(err => {
-        console.log(err);
-    })
 
 fetch("http://localhost/tiendamvc/api/providers")
     .then(data => data.json())
