@@ -35,8 +35,9 @@ class ApiController extends Controller
         exit();
     }
     public function newproduct()
-    {
+    {   //obtiene los datos del producto desde el body de la peticion
         $data = json_decode(file_get_contents('php://input'), true);
+        //crea un nuevo producto con los datos recibidos
         $product = new Product();
         $product->name = $data['name'];
         $product->description = $data['description'];
@@ -47,11 +48,16 @@ class ApiController extends Controller
         $product->save();
         //$products=Product::all();
         //quiero devolver los productos y su categoria y proveedor
+        //para eso uso el metodo with
+        //con el metodo get obtengo los productos
+     
         $products = Product::with(['category', 'provider'])
         ->orderBy('created_at', 'desc')
         ->take(5)
         ->get();
-
+        //con el metodo json_encode convierto el array de productos a json
+        //con header('Content-Type: application/json'); envio la respuesta como json
+        //con echo $json  envio la respuesta
         $json = json_encode($products);
         header('Content-Type: application/json');
         echo $json;
@@ -60,7 +66,9 @@ class ApiController extends Controller
     public function products()
     {
         //ordenados por mas recientes
-
+        //obtiene los productos y su categoria y proveedor
+        //con el metodo take(5) obtengo solo los 5 primeros
+        //con el metodo get obtengo los productos
         $products = Product::with(['category', 'provider'])
             ->orderBy('created_at', 'desc')
             ->take(5)
