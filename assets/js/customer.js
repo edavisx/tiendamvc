@@ -1,80 +1,51 @@
-const fullUrl = window.location.href;
-console.log(fullUrl);
-
-// Obtener solo el dominio
-const domain = window.location.origin;
-console.log(domain);
-
-// Obtener el pathname (ruta después del dominio)
-const path = window.location.pathname;
-console.log(path);
-
-// Obtener los parámetros de búsqueda
-const queryString = window.location.search;
-console.log(queryString);
-
-
-
 // Obtener el URL completo
 const fullUrl2 = window.location.href;
 
 // Dividir el URL en partes usando "/" como separador
-const parts = fullUrl.split('/');
+const parts = fullUrl2.split('/');
 
 // Unir las primeras cuatro partes (incluyendo el protocolo)
 const result = parts.slice(0, 4).join('/') + '/';
 console.log(result);
 
 
-
-//fetch("http://localhost/tiendamvc/api/categories")
-//fetch("http://127.0.0.1/tiendamvc/api/categories")
-fetch(result + "api/categories")
+fetch(result + "api/products2")
     .then(data => data.json())
     .then(datos => {
         datos.forEach(element => {
             let option = document.createElement("option");
-            option.value = element.category_id;
+            option.value = element.product_id;
             option.textContent = element.name;
-            document.getElementById("category").appendChild(option);
+            document.getElementById("selectProducto").appendChild(option);
         });
     })
     .catch(err => {
         console.log(err);
     })
 
-//AJAX forma nueva de hacer peticiones al servidor
-//fetch(url, options)
-//url: la url a la que se va a hacer la petición
-//options: las opciones de la petición
-//options.method: el método de la petición (GET, POST, PUT, DELETE)
-//options.body: el cuerpo de la petición (solo para POST y PUT)
-//options.headers: los encabezados de la petición
-//fetch devuelve una promesa
-//fetch.then(callback): se ejecuta cuando la promesa se cumple
-//callback: función que recibe la respuesta del servidor
-//fetch.catch(callback): se ejecuta cuando la promesa no se cumple
-//callback: función que recibe el error
-//fetch.then(callback).then(callback): se pueden encadenar varios then
-//callback: función que recibe la respuesta del servidor
-//fetch.then(callback).catch(callback): se pueden encadenar un then y un catch
+function opcionSeleccionada() {
+    const selectElement = document.getElementById("selectProducto");
+    const selectedValue = selectElement.value;
+    console.log("La opción seleccionada es: " + selectedValue);
+    fetch(result + "api/products/" + selectedValue)
+        .then(data => data.json())
+        .then(datos => {
+            document.getElementById("descripcion").value = datos.name + " : " + datos.description;
+            document.getElementById("precio").value = datos.price;
+                   
+            document.getElementById("existencia").value = datos.stock;
+            
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
 
 
-//fetch("http://localhost/tiendamvc/api/providers")
-//fetch("http://127.0.0.1/tiendamvc/api/providers")
-fetch(result + "api/providers")
-    .then(data => data.json())
-    .then(datos => {
-        datos.forEach(element => {
-            let option = document.createElement("option");
-            option.value = element.provider_id;
-            option.textContent = element.name;
-            document.getElementById("provider").appendChild(option);
-        });
-    })
-    .catch(err => {
-        console.log(err);
-    })
+
+
+
+
 
 //fetch("http://localhost/tiendamvc/api/products")
 fetch(result + "api/products")

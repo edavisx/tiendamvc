@@ -90,5 +90,37 @@ class ApiController extends Controller
         exit();
     }
 
+    public function products2()
+    {
+ 
+        $products = Product::with(['category', 'provider'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $json = json_encode($products);
+        header('Content-Type: application/json');
+        echo $json;
+        exit();
+    }
+
+    public function productoElegido(...$params)
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $product = Product::find($data['product_id']);
+
+        $product->description = $data['description'];
+        $product->category_id = $data['category_id'];
+        $product->provider_id = $data['provider_id'];
+        $product->stock = $data['stock'];
+        $product->price = $data['price'];
+
+        $product->delete();
+        $products = Product::with(['category', 'provider'])->get();
+        $json = json_encode($products);
+        header('Content-Type: application/json');
+        echo $json;
+        exit();
+    }
+
+
 }
 ?>

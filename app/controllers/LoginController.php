@@ -16,7 +16,13 @@ class LoginController extends Controller{
                 session_start();
                 $_SESSION["user_id"]=$user->user_id;
                 $_SESSION["username"]=$user->username;
+
+                //var_dump(base_url());
+                //exit;
+
                 header("Location: ".base_url()."admin");
+               
+            
 
             }else{
                 $error="User or pass incorrect";
