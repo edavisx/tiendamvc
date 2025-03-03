@@ -12,14 +12,52 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="<?= base_url() ?>assets/js/customer.js" defer></script>
+
+    <?php
+    /*
+
+    // para el SELECT de Clientes se va a utilizar PHP
+    // para el SELECT de Productos se va a utilizar AJAX
+
+    <? if (isset($_POST['cliente_id'])): ?>
+        <script src="<?= base_url() ?>assets/js/customer.js" defer></script>
+    <? else: ?>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $("#cliente").change(function(){
+                    var clienteId = $(this).val();
+                    if(clienteId){
+                        $.ajax({
+                            type: "POST",
+                            url: "cargar_productos.php",
+                            data: {cliente_id: clienteId},
+                            success: function(response){
+                                $("#productos").html(response);
+                            }
+                        });
+                    }
+                });
+            });
+
+        </script>
+    <? endif; ?>
+    */
+    ?>
+    
+    
+
 </head>
+
 
 <body>
     <div class="container">
         <nav class="navbar navbar-light bg-light">
-            <span class="navbar-brand mb-0 h1">Usuario: XXXXXX</span>
+            <span class="navbar-brand mb-0 h1">cliente: XXXXXX</span>
         </nav>
+
         <form id="form">
+
 
             <div class="form-group">
                 <label for="">Producto:</label>
@@ -27,6 +65,19 @@
                     <option selected>Choose...</option>
                 </select>
             </div>
+
+            <br>
+        </form>
+
+        <form id="form">
+            <div class="form-group">
+                <label for="">Producto:</label>
+                <select id="selectProducto" placeholder="Choose..." onchange="opcionSeleccionada()">
+                    <option selected>Choose...</option>
+                </select>
+            </div>
+
+
 
             <br>
             <div class="form-group col-12">
@@ -38,6 +89,11 @@
             <div>
                 <label for="precioUnitario">Precio Unitario:</label>
                 <input type="number" readonly id="precio">
+            <br>
+            </div>
+            <div>
+                <label for="precioUnitario">ID del Producto:</label>
+                <input type="number" readonly id="ID_producto">
             <br>
             </div>
             <div>

@@ -12,7 +12,13 @@ class Product extends Model{
     public function provider(){
         return $this->belongsTo('Formacom\Models\Provider','provider_id');
     }
-    
+
+    public function ordenes()
+    {
+        return $this->belongsToMany(Order::class, 'order_has_product', 'producto_id', 'order_id')->withTimestamps();
+    }
+
+
 }
 
 ?>

@@ -77,7 +77,7 @@ fetch(result + "api/providers")
     })
 
 //fetch("http://localhost/tiendamvc/api/products")
-fetch(result + "api/products")
+fetch(result + "api/PRODUCT_products")
     .then(data => data.json())
     .then(datos => {
         showproducts(datos);
@@ -98,7 +98,7 @@ document.getElementById("form").onsubmit = function (e) {
     }
     //ToDO: Validar los datos
     //fetch("http://localhost/tiendamvc/api/newproduct",{
-    fetch(result + "api/newproduct",{
+    fetch(result + "api/PRODUCT_newproduct",{
         method: 'POST',
         body: JSON.stringify(product),
         headers:{

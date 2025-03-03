@@ -9,7 +9,7 @@ const result = parts.slice(0, 4).join('/') + '/';
 console.log(result);
 
 
-fetch(result + "api/products2")
+fetch(result + "api/ORDER_products")
     .then(data => data.json())
     .then(datos => {
         datos.forEach(element => {
@@ -27,13 +27,13 @@ function opcionSeleccionada() {
     const selectElement = document.getElementById("selectProducto");
     const selectedValue = selectElement.value;
     console.log("La opción seleccionada es: " + selectedValue);
-    fetch(result + "api/products/" + selectedValue)
+    fetch(result + "api/ORDER_productoElegido/" + selectedValue)
         .then(data => data.json())
         .then(datos => {
-            document.getElementById("descripcion").value = datos.name + " : " + datos.description;
-            document.getElementById("precio").value = datos.price;
-                   
-            document.getElementById("existencia").value = datos.stock;
+            document.getElementById("descripcion").value = datos[0].name + " : " + datos[0].description;
+            document.getElementById("precio").value = datos[0].price;
+            document.getElementById("ID_producto").value = datos[0].product_id;
+            document.getElementById("existencia").value = datos[0].stock;
             
         })
         .catch(err => {
@@ -111,4 +111,23 @@ function showproducts(datos){
         tr.appendChild(td);
         tbody.appendChild(tr);
     });
+}
+
+///////////////////
+function agregarProducto() {
+    const selectElement = document.getElementById("selectProducto");
+    const selectedValue = selectElement.value;
+    console.log("La opción seleccionada es: " + selectedValue);
+    fetch(result + "api/ORDER_productoElegido/" + selectedValue)
+        .then(data => data.json())
+        .then(datos => {
+            document.getElementById("descripcion").value = datos[0].name + " : " + datos[0].description;
+            document.getElementById("precio").value = datos[0].price;
+            document.getElementById("ID_producto").value = datos[0].product_id;
+            document.getElementById("existencia").value = datos[0].stock;
+            
+        })
+        .catch(err => {
+            console.log(err);
+        })
 }

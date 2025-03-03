@@ -6,6 +6,8 @@ use Formacom\Models\Address;
 use Formacom\Models\Category;
 use Formacom\Models\Provider;
 use Formacom\Models\Product;
+use Formacom\Models\Order;
+//use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
@@ -34,7 +36,7 @@ class ApiController extends Controller
         echo $json;
         exit();
     }
-    public function newproduct()
+    public function PRODUCT_newproduct()
     {   //obtiene los datos del producto desde el body de la peticion
         $data = json_decode(file_get_contents('php://input'), true);
         //crea un nuevo producto con los datos recibidos
@@ -63,7 +65,7 @@ class ApiController extends Controller
         echo $json;
         exit();
     }
-    public function products()
+    public function PRODUCT_products()
     {
         //ordenados por mas recientes
         //obtiene los productos y su categoria y proveedor
@@ -90,7 +92,7 @@ class ApiController extends Controller
         exit();
     }
 
-    public function products2()
+    public function ORDER_products()
     {
  
         $products = Product::with(['category', 'provider'])
@@ -102,25 +104,67 @@ class ApiController extends Controller
         exit();
     }
 
-    public function productoElegido(...$params)
+    public function ORDER_productoElegido(...$params)
     {
-        $data = json_decode(file_get_contents('php://input'), true);
-        $product = Product::find($data['product_id']);
+        //$data = json_decode(file_get_contents('php://input'), true);
+        $product = Product::find($params);
 
-        $product->description = $data['description'];
-        $product->category_id = $data['category_id'];
-        $product->provider_id = $data['provider_id'];
-        $product->stock = $data['stock'];
-        $product->price = $data['price'];
-
-        $product->delete();
-        $products = Product::with(['category', 'provider'])->get();
-        $json = json_encode($products);
+        $json = json_encode($product);
         header('Content-Type: application/json');
         echo $json;
         exit();
     }
 
+    
+//////////////////////////////
+
+    public function crearOrden(...$params)
+    {
+        // Validación de datos aquí
+
+        $orden = Order::create(['status' => 'en_proceso', 'customer_id' => '2'] ); // Crea la orden con los datos necesarios
+        $producto = Product::find($params);
+        $orden->productos()->attach($producto->product_id);
+    
+        exit();
+    }
+
+
+
+    /*
+    public function actualizarOrden(Request $request, $id)
+    {
+        $orden = Orden::findOrFail($id);
+
+        // Añadir productos
+        if ($request->has('productos_añadir')) {
+            $orden->productos()->attach($request->productos_añadir);
+        }
+
+        // Eliminar productos
+        if ($request->has('productos_eliminar')) {
+            $orden->productos()->detach($request->productos_eliminar);
+        }
+
+        return response()->json(['mensaje' => 'Orden actualizada con éxito', 'orden' => $orden]);
+    }
+
+    public function eliminarOrden($id)
+    {
+        $orden = Orden::findOrFail($id);
+        $orden->productos()->detach(); // Elimina las relaciones en la tabla pivote
+        $orden->delete();
+
+        return response()->json(['mensaje' => 'Orden eliminada con éxito']);
+    }
+
+    public function verOrden($id)
+    {
+        $orden = Orden::with('productos')->findOrFail($id); // Carga los productos relacionados
+
+        return response()->json($orden);
+    }
+*/
 
 }
-?>
+
